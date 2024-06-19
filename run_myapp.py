@@ -1,1 +1,1 @@
-from myapp import routes
+import routes
