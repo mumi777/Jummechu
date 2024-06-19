@@ -4,15 +4,35 @@ import torch
 from transformers import BertTokenizer, BertForSequenceClassification
 import torch.nn.functional as F
 import random
-
+import os
 
 app = Flask(__name__)
-f = open("Good_Food.txt", 'r')
-Good = f.readline()
-list_Good = [Good]
-g = open("Bad_Food.txt", 'r')
-Bad = g.readline()
-list_Bad = [Bad]
+
+
+script_dir = os.path.dirname(__file__)
+file_path_good = os.path.join(script_dir, 'Good_Food.txt')
+file_path_bad = os.path.join(script_dir, 'Bad_Food.txt')
+
+try:
+    with open(file_path_good, 'r') as file:
+        Goods = file.read()
+        print("File content successfully read.")
+except FileNotFoundError:
+    print(f"File not found: {file_path}")
+except Exception as e:
+    print(f"An error occurred: {e}")
+
+try:
+    with open(file_path_bad, 'r') as file:
+        Bads = file.read()
+        print("File content successfully read.")
+except FileNotFoundError:
+    print(f"File not found: {file_path}")
+except Exception as e:
+    print(f"An error occurred: {e}")
+
+list_Good = [Goods]
+list_Bad = [Bads]
 
 
 model_name = "kykim/bert-kor-base"
