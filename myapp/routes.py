@@ -5,6 +5,8 @@ from transformers import BertTokenizer, BertForSequenceClassification
 import torch.nn.functional as F
 import random
 
+
+app = Flask(__name__)
 f = open("Good_Food.txt", 'r')
 Good = f.readline()
 list_Good = [Good]
@@ -39,7 +41,6 @@ def classify_emotion(text):
         "chat.html", title="Chat", 
     )
 @app.route("/")
-@app.route("/index")
 def index_func():
     return render_template("index.html", title="Home")
 
@@ -49,3 +50,7 @@ def chat_func():
     sentence = data["text"]
     result = classify_emotion(sentence)
     return render_template("chat.html", title="Chat")
+
+
+if __name__ == '__main__':
+	app.run(debug=True)
