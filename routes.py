@@ -1,5 +1,4 @@
 from flask import Flask, render_template, url_for, request
-import app
 import torch
 from transformers import BertTokenizer, BertForSequenceClassification
 import torch.nn.functional as F
