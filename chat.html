@@ -8,27 +8,28 @@
         body{
             background-image: url('background.jpg');
         }
+
+        #output {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
     </style>
 </head>
 <body>
-    <h1>당신의 현재 기분(상태)를 말해주세요!</h1>
-    <textarea id="inputText" rows="4" cols="50" placeholder="Enter your message here"></textarea><br>
-    <button onclick="getPrediction()">Predict Emotion</button>
-    <h2>Prediction Result:</h2>
-    <p id="result"></p>
-
+    <h1>음식 추천 받기</h1>
+    <label for="food-input">음식 종류를 입력하세요:</label>
+    <input type="text" id="food-input" placeholder="예: 피자, 파스타">
+    <button onclick="recommendFood()">음식 추천 받기</button>
+    
+    <div id="output"></div>
+    
     <script>
-        async function getPrediction() {
-            const text = document.getElementById('inputText').value;
-            const response = await fetch('https://5caa-34-82-242-251.ngrok-free.app/predict', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ text: text })
-            });
-            const result = await response.json();
-            document.getElementById('result').innerText = `Emotion: ${result.emotion}`;
+        function recommendFood() {
+            var inputText = document.getElementById('food-input').value;
+            var outputDiv = document.getElementById('output');
+            outputDiv.textContent = "추천 음식: " + inputText;
         }
     </script>
 </body>
