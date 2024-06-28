@@ -20,17 +20,30 @@
 <body>
     <h1>음식 추천 받기</h1>
     <label for="food-input">지금 당신의 기분이나 상태를 말해주세요:</label>
-    <input type="text" id="food-input" placeholder="예: 슬퍼, 기뻐, 상을 받았어 등등">
-    <button class = "foodbutton" onclick="recommendFood()">음식 추천 받기</button>
-    
-    <div id="output"></div>
+    <textarea id="chatInput" rows="4" cols="50"></textarea>
+    <button id="sendButton">Send</button>
+    <div id="emotionResult"></div>
+    <div id="responseResult"></div>
     
     <script>
-        function recommendFood() {
-            var inputText = document.getElementById('food-input').value;
-            var outputDiv = document.getElementById('output');
-            outputDiv.textContent = "추천 음식: " + inputText;
-        }
+        $(document).ready(function() {
+            $('#sendButton').click(function() {
+                var text = $('#chatInput').val();
+                $.ajax({
+                    url: '/classify_emotion',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({text: text}),
+                    success: function(response) {
+                        $('#emotionResult').text('Detected Emotion: ' + response.emotion);
+                        $('#responseResult').text(response.response);
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+        });
     </script>
 </body>
 </html>
