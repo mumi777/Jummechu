@@ -31,17 +31,21 @@
         $(document).ready(function() {
             $('#sendButton').click(function() {
                 var text = $('#chatInput').val();
+                console.log("Button clicked. Input text:", text); // 디버깅 출력
+
                 $.ajax({
                     url: '/classify_emotion',
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify({text: text}),
                     success: function(response) {
+                        console.log("Response received:", response); // 디버깅 출력
                         $('#emotionResult').text('Detected Emotion: ' + response.emotion);
                         $('#responseResult').text(response.response);
                     },
                     error: function(error) {
                         console.error('Error:', error);
+                        $('#emotionResult').text('Error occurred');
                     }
                 });
             });
@@ -49,3 +53,4 @@
     </script>
 </body>
 </html>
+
