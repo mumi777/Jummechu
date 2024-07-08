@@ -61,8 +61,13 @@ def chat_func():
 def classify_emotion_api():
     data = request.json
     text = data["text"]
+    print("Received text for emotion classification:", text) # 디버깅 출력
     emotion, response = classify_emotion(text)
     return jsonify({"emotion": emotion, "response": response})
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
