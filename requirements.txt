@@ -2,3 +2,4 @@ flask
 torch
 transformers
 flask-ngrok
+flask-cors
