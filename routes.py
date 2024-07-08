@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, jsonify
+from flask_cors import CORS
 import torch
 from transformers import BertTokenizer, BertForSequenceClassification
 import torch.nn.functional as F
@@ -6,6 +7,7 @@ import random
 import os
 
 app = Flask(__name__)
+CORS(app)  # CORS 설정 추가
 
 script_dir = os.path.dirname(__file__)
 file_path_good = os.path.join(script_dir, 'Good_Food.txt')
@@ -72,4 +74,3 @@ def classify_emotion_api():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
