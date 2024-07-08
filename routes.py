@@ -14,20 +14,20 @@ file_path_bad = os.path.join(script_dir, 'Bad_Food.txt')
 try:
     with open(file_path_good, 'r') as file:
         Goods = file.read().splitlines()
-        print("File content successfully read.")
+        print("Good_Food.txt 파일을 성공적으로 읽었습니다.")
 except FileNotFoundError:
-    print(f"File not found: {file_path_good}")
+    print(f"파일을 찾을 수 없습니다: {file_path_good}")
 except Exception as e:
-    print(f"An error occurred: {e}")
+    print(f"오류가 발생했습니다: {e}")
 
 try:
     with open(file_path_bad, 'r') as file:
         Bads = file.read().splitlines()
-        print("File content successfully read.")
+        print("Bad_Food.txt 파일을 성공적으로 읽었습니다.")
 except FileNotFoundError:
-    print(f"File not found: {file_path_bad}")
+    print(f"파일을 찾을 수 없습니다: {file_path_bad}")
 except Exception as e:
-    print(f"An error occurred: {e}")
+    print(f"오류가 발생했습니다: {e}")
 
 model_name = "kykim/bert-kor-base"
 model = BertForSequenceClassification.from_pretrained(model_name, num_labels=2)
@@ -61,13 +61,14 @@ def chat_func():
 def classify_emotion_api():
     data = request.json
     text = data["text"]
-    print("Received text for emotion classification:", text) # 디버깅 출력
-    emotion, response = classify_emotion(text)
-    return jsonify({"emotion": emotion, "response": response})
-
-if __name__ == '__main__':
-    app.run(debug=True)
-
+    print("분류할 텍스트를 받았습니다:", text) # 디버깅 출력
+    try:
+        emotion, response = classify_emotion(text)
+        print("분류 결과:", emotion, response) # 디버깅 출력
+        return jsonify({"emotion": emotion, "response": response})
+    except Exception as e:
+        print(f"에러가 발생했습니다: {e}")
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
