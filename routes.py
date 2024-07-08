@@ -61,10 +61,10 @@ def chat_func():
 def classify_emotion_api():
     data = request.json
     text = data["text"]
-    print("분류할 텍스트를 받았습니다:", text) # 디버깅 출력
+    print("분류할 텍스트를 받았습니다:", text)  # 디버깅 출력
     try:
         emotion, response = classify_emotion(text)
-        print("분류 결과:", emotion, response) # 디버깅 출력
+        print("분류 결과:", emotion, response)  # 디버깅 출력
         return jsonify({"emotion": emotion, "response": response})
     except Exception as e:
         print(f"에러가 발생했습니다: {e}")
