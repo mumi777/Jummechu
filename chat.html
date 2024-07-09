@@ -39,7 +39,7 @@
 
     <py-script>
         import js
-        from emotion_classify import routes.py
+        import routes
 
 
         def handle_submit(event):
@@ -51,7 +51,7 @@
         
 
 
-        defection = classify_emotion(texts)
+        defection = routes.classify_emotion(texts)
         # 버튼 클릭 이벤트에 파이썬 함수 연결
         js.document.getElementById('submitBtn').addEventListener('click', handle_submit)
     </py-script>
