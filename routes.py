@@ -1,9 +1,10 @@
+from flask import Flask, render_template, request, jsonify
 import torch
 from transformers import BertTokenizer, BertForSequenceClassification
 import torch.nn.functional as F
 import random
 import os
-
+app = Flask(__name__)
 script_dir = os.path.dirname(__file__)
 file_path_good = os.path.join(script_dir, 'Good_Food.txt')
 file_path_bad = os.path.join(script_dir, 'Bad_Food.txt')
