@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -44,19 +44,18 @@
 
     <py-script>
         import js
-        from emotion_classify import routes
+        from routes import classify_emotion
 
 
         def handle_submit(event):
             # HTML 텍스트 입력 필드의 값을 파이썬 변수로 저장
-            texts = js.document.getElementById('textInput').value
-
-            # 결과를 HTML 요소에 표시
-            js.document.getElementById('output').innerText = f"Entered text: {text}"
+            text = js.document.getElementById('textInput').value
+            if text: 
+                # 결과를 HTML 요소에 표시
+                results = routes.classify_emotion(text)
+                js.document.getElementById('output').innerText = results
         
 
-
-        defection = routes.classify_emotion(texts)
         # 버튼 클릭 이벤트에 파이썬 함수 연결
         js.document.getElementById('submitBtn').addEventListener('click', handle_submit)
     </py-script>
