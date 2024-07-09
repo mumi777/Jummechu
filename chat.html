@@ -15,6 +15,13 @@
             border: 1px solid #ccc;
             background-color: #f9f9f9;
         }
+        .container {
+            display: flex;
+            align-items: center;
+        }
+        #textInput {
+            margin-right: 10px;
+        }
     </style>
      <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
      <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
@@ -27,12 +34,11 @@
 <body>
 
     <h1>음식 추천 받기</h1>
-    <label for="food-input">지금 당신의 기분이나 상태를 말해주세요:</label>
-    <textarea id="chatInput" rows="4" cols="50"></textarea>
-    <button id="sendButton">Send</button>
-    <div id="emotionResult"></div>
-    <div id="responseResult"></div>
-   
+    <div class="container">
+    <input type="text" id="textInput" placeholder="Enter text here">
+    <button id="submitBtn">Submit</button>
+    </div>
+    <p id="output"></p>
 
 
     <py-script>
@@ -83,6 +89,22 @@
             else:
                 response = "좋은 일이 있으셨군요! {}은(는) 어떠신가요?".format(random.choice(Goods))
 
+
+        return response
+
+
+        def handle_submit(event):
+            # HTML 텍스트 입력 필드의 값을 파이썬 변수로 저장
+            texts = js.document.getElementById('textInput').value
+
+            # 결과를 HTML 요소에 표시
+            js.document.getElementById('output').innerText = f"Entered text: {text}"
+        
+
+
+        defection = classify_emotion(texts)
+        # 버튼 클릭 이벤트에 파이썬 함수 연결
+        js.document.getElementById('submitBtn').addEventListener('click', handle_submit)
     </py-script>
  
 
