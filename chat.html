@@ -57,4 +57,68 @@
     </py-script>
 
 </body>
+</html><!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>점심 메뉴 추천 받기!</title>
+    <style>
+        body {
+            /* background-image: url('background.jpg'); */
+        }
+
+        #output {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+        .container {
+            display: flex;
+            align-items: center;
+        }
+        #textInput {
+            margin-right: 10px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+    <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+</head>
+<body>
+
+    <h1>음식 추천 받기</h1>
+    <div class="container">
+        <input type="text" id="textInput" placeholder="Enter text here">
+        <button id="submitBtn">Submit</button>
+    </div>
+    <p id="output"></p>
+
+    <py-script>
+        from js import document, fetch
+        import asyncio
+        from pyscript import create_proxy
+
+        async def handle_submit(event):
+            text = document.getElementById('textInput').value
+            if text:
+                response = await fetch("/classify", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({"text": text})
+                })
+                result = await response.json()
+                document.getElementById('output').innerText = result['result']
+
+        # 이벤트 핸들러를 프록시로 생성
+        handle_submit_proxy = create_proxy(handle_submit)
+
+        # 버튼 클릭 이벤트에 파이썬 함수 연결
+        document.getElementById('submitBtn').addEventListener('click', handle_submit_proxy)
+    </py-script>
+
+</body>
 </html>
