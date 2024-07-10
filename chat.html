@@ -23,7 +23,6 @@
             margin-right: 10px;
         }
     </style>
-    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
 </head>
 <body>
 
@@ -34,46 +33,23 @@
     </div>
     <p id="output"></p>
 
-    <script defer src="https://pyodide-cdn2.iodide.io/pyodide.js"></script>
     <script>
-        languagePluginLoader.then(() => {
-            const pyodide = self.pyodide;
-
-            async function handle_submit(event) {
-                const text = document.getElementById('textInput').value;
-                if (text) {
-                    const response = await fetch("/classify", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({"text": text})
-                    });
-                    const result = await response.json();
-                    document.getElementById('output').innerText = result['result'];
-                }
-            }
-
-            // Pyodide로 직접 Python 함수 정의 및 등록
-            pyodide.runPythonAsync(`
-                import json
-                
-                async def classify_emotion(text):
-                    # 여기에 감정 분류 및 음식 추천 로직 구현
-                    # 예시로 랜덤하게 음식 추천
-                    foods = ["짜장면", "피자", "스테이크", "샐러드", "떡볶이"]
-                    result = {
-                        "result": f"추천 음식: {random.choice(foods)}"
-                    }
-                    return json.dumps(result)
-                `).then(() => {
-                    // JavaScript 함수와 Python 함수 연결
-                    window.classify_emotion = pyodide.globals.classify_emotion;
+        async function handle_submit(event) {
+            const text = document.getElementById('textInput').value;
+            if (text) {
+                const response = await fetch("/classify", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({"text": text})
                 });
+                const result = await response.json();
+                document.getElementById('output').innerText = `감정: ${result.emotion}, 추천 음식: ${result.food_recommendation}`;
+            }
+        }
 
-            // 버튼 클릭 이벤트에 JavaScript 함수 연결
-            document.getElementById('submitBtn').addEventListener('click', handle_submit);
-        });
+        document.getElementById('submitBtn').addEventListener('click', handle_submit);
     </script>
 
 </body>
