@@ -51,13 +51,14 @@ async function handle_submit(event) {
             }
 
             const result = await response.json();
-            document.getElementById('output').innerText = `감정: ${result.emotion}, 추천 음식: ${result.food_recommendation}`;
+            document.getElementById('output').innerText = result['result'];
         } catch (error) {
             console.error('fetch 오류:', error);
             // 오류 처리 로직 추가 (예: 사용자에게 오류 메시지 출력)
         }
     }
 }
+
 
 
         document.getElementById('submitBtn').addEventListener('click', handle_submit);
