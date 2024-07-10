@@ -57,12 +57,14 @@ def index_func():
 def chat_func():
     return render_template("chat.html", title="Chat")
 
+
 @app.route("/classify", methods=["POST"])
 def classify_func():
     data = request.json
     text = data.get("text", "")
     result = classify_emotion(text)
     return jsonify({"result": result})
+
 
 if __name__ == '__main__':
     app.run(debug=True)
