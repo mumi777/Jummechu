@@ -34,21 +34,31 @@ except Exception as e:
 model_name = "kykim/bert-kor-base"
 model = BertForSequenceClassification.from_pretrained(model_name, num_labels=2)
 tokenizer = BertTokenizer.from_pretrained(model_name)
+@app.route("/classify", methods=["POST"])
 
-def classify_emotion(text):
-    tokens = tokenizer(text, padding=True, truncation=True, return_tensors="pt")
-    with torch.no_grad():
-        prediction = model(**tokens)
-    prediction = F.softmax(prediction.logits, dim=1)
-    output = prediction.argmax(dim=1).item()
-    labels = ["부정적", "긍정적"]
-    emotion = labels[output]
+def classify():
+    data = request.json
+    text = data.get("text", "")
+    if text:
+        tokens = tokenizer(text, padding=True, truncation=True, return_tensors="pt")
+        with torch.no_grad():
+            prediction = model(**tokens)
+        prediction = F.softmax(prediction.logits, dim=1)
+        output = prediction.argmax(dim=1).item()
+        labels = ["부정적", "긍정적"]
+        emotion = labels[output]
 
-    if emotion == "부정적":
-        return "저런... 기분이 안 좋으시군요. {} 같은 음식은 어떠신가요?".format(random.choice(Bads))
+        if emotion == "부정적":
+            result = "저런... 기분이 안 좋으시군요. {} 같은 음식은 어떠신가요?".format(random.choice(Bads))
+        else:
+            result = "좋은 일이 있으셨군요! {}은(는) 어떠신가요?".format(random.choice(Goods))
     else:
-        return "좋은 일이 있으셨군요! {}은(는) 어떠신가요?".format(random.choice(Goods))
+        result = "입력이 없습니다."
 
+    return jsonify({"result": result})
+
+if __name__ == "__main__":
+    app.run(debug=True)
 @app.route("/")
 def index_func():
     return render_template("index.html", title="Home")
@@ -58,13 +68,3 @@ def chat_func():
     return render_template("chat.html", title="Chat")
 
 
-@app.route("/classify", methods=["POST"])
-def classify_func():
-    data = request.json
-    text = data.get("text", "")
-    result = classify_emotion(text)
-    return jsonify({"result": result})
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
