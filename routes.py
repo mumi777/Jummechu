@@ -68,3 +68,11 @@ def chat_func():
     return render_template("chat.html", title="Chat")
 
 
+@app.route('/classify', methods=['POST'])
+def classify_text():
+    text = request.json.get('text', '')
+    # 여기서 classify_emotion 함수를 호출하여 결과를 얻습니다
+    result = classify_emotion(text)
+    return jsonify({'result': result})
+
+
