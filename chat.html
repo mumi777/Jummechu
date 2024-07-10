@@ -34,30 +34,30 @@
     <p id="output"></p>
 
     <script>
-async function handle_submit(event) {
-    const text = document.getElementById('textInput').value;
-    if (text) {
-        try {
-            const response = await fetch("/classify", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({"text": text})
-            });
+        async function handle_submit(event) {
+            const text = document.getElementById('textInput').value;
+        if (text) {
+            try {
+                const response = await fetch("/classify", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({"text": text})
+                });
 
-            if (!response.ok) {
-                throw new Error('서버 오류: ' + response.status);
+                if (!response.ok) {
+                    throw new Error('서버 오류: ' + response.status);
+                }
+    
+                const result = await response.json();
+                document.getElementById('output').innerText = result['result'];
+            } catch (error) {
+                console.error('fetch 오류:', error);
+                // 오류 처리 로직 추가 (예: 사용자에게 오류 메시지 출력)
             }
-
-            const result = await response.json();
-            document.getElementById('output').innerText = result['result'];
-        } catch (error) {
-            console.error('fetch 오류:', error);
-            // 오류 처리 로직 추가 (예: 사용자에게 오류 메시지 출력)
         }
     }
-}
 
 
 
